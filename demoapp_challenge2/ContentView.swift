@@ -20,7 +20,6 @@ struct ContentView: View {
         VStack(spacing: 30) {
             if let displayImage {
                 displayImage
-                    .resizable()
                     .scaledToFit()
                     .frame(maxHeight: 400)
                     .cornerRadius(12)
