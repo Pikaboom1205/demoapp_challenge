@@ -8,13 +8,11 @@
 import SwiftUI
 import PhotosUI
 
-
-//Import PhotoUI and create private var for showcasing imgs, create link/URL for the JSON files
 struct ContentView: View {
     @State private var selectImg: PhotosPickerItem?
     @State private var displayImg: Image?
     
-    let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("photo.json")
+    let file_URL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("photo.json")
     
     var body: some View {
         VStack(spacing: 30) {
@@ -32,7 +30,7 @@ struct ContentView: View {
                 Label("Choose your photo", systemImage: "photo")
                     .font(.headline).padding().foregroundColor(.white).background(Color.blue).cornerRadius(10)
             }
-            .onChange(of: selectImg) { oldValue, newValue in
+            .onChange(of: selectImg) {oldValue, newValue in
                 guard let newValue else {return}
                 
                 newValue.loadTransferable(type: Data.self) { result in
@@ -41,7 +39,7 @@ struct ContentView: View {
                         let base64Text = rawData.base64EncodedString()
                         
                         if let jsonData = try? JSONEncoder().encode(base64Text) {
-                            try? jsonData.write(to: fileURL)
+                            try? jsonData.write(to: file_URL)
                         }
                         
                         DispatchQueue.main.async {
@@ -55,7 +53,7 @@ struct ContentView: View {
         }
         .padding()
         .onAppear {
-            if let jsonData = try? Data(contentsOf: fileURL),
+            if let jsonData = try? Data(contentsOf: file_URL),
                let base64Text = try? JSONDecoder().decode(String.self, from: jsonData),
                let rawData = Data(base64Encoded: base64Text),
                let uiImage = UIImage(data: rawData) {
