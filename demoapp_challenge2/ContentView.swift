@@ -16,7 +16,9 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            Color.cyan
+            RadialGradient(colors: [.blue, .cyan, .indigo],
+                           center: .center,
+                           startRadius: 0, endRadius: 270)
                 .ignoresSafeArea()
             
             VStack(spacing: 30) {
